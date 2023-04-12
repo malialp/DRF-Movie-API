@@ -31,21 +31,21 @@ The following endpoints are available:
 
 ### Movies
 
--   `GET /movies/`: Returns a list of all movies.
--   `POST /movies/`: Creates a new movie.
--   `GET /movies/{id}/`: Returns a single movie by id.
--   `PUT /movies/{id}/`: Updates a single movie by id.
--   `DELETE /movies/{id}/`: Deletes a single movie by id.
+-   `GET /movies`: Returns a list of all movies.
+-   `POST /movies`: Creates a new movie.
+-   `GET /movies/{id}`: Returns a single movie by id.
+-   `PUT /movies/{id}`: Updates a single movie by id.
+-   `DELETE /movies/{id}`: Deletes a single movie by id.
 -   `GET /movies/{id}/reviews`: Returns a list of reviews of the movie.
 -   `POST /movies/{id}/reviews`: Creates a new movie review for the movie.
 
 ### Directors
  
--   `GET /directors/`: Returns a list of all directors.
--   `POST /directors/`: Creates a new director.
--   `GET /directors/{id}/`: Returns a single director by id.
--   `PUT /directors/{id}/`: Updates a single director by id.
--   `DELETE /directors/{id}/`: Deletes a single director by id.
+-   `GET /directors`: Returns a list of all directors.
+-   `POST /directors`: Creates a new director.
+-   `GET /directors/{id}`: Returns a single director by id.
+-   `PUT /directors/{id}`: Updates a single director by id.
+-   `DELETE /directors/{id}`: Deletes a single director by id.
 
 ### Reviews
 
@@ -54,10 +54,10 @@ The following endpoints are available:
 -   `DELETE /reviews/{id}`: Deletes a single review by id.
 
 ## Authentication
-This API uses Token authentication to authenticate users. To obtain a token, send a POST request to the `auth/` endpoint with your username and password:
+This API uses Token authentication to authenticate users. To obtain a token, send a POST request to the `/auth` endpoint with your username and password:
 
 ```http
-POST /auth/
+POST /auth
 Content-Type: application/json
 
 {
@@ -75,7 +75,7 @@ The server will respond with a JSON object containing your token:
 ```
 Include the token in subsequent requests by including the `Authorization` header with the value `Token your-token`:
 ```http
-GET  /movies/  
+GET  /movies  
 Authorization: Token your-token
 ```
 ## License
