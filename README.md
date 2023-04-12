@@ -57,7 +57,7 @@ The following endpoints are available:
 This API uses Token authentication to authenticate users. To obtain a token, send a POST request to the `auth/` endpoint with your username and password:
 
 ```http
-POST /api-token-auth/
+POST /auth/
 Content-Type: application/json
 
 {
