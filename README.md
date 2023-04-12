@@ -13,6 +13,7 @@ This is a simple Django REST Framework Movie API that allows users to create, re
 	```
 3. Create the database:
 	```bash
+	python manage.py makemigrations
 	python manage.py migrate
 	```
 4. Create a superuser:
