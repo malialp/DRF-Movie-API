@@ -40,3 +40,22 @@ class Review(models.Model):
 
 	def __str__(self):
 		return f'{self.author} - {self.content[:50]}'
+	
+
+class MovieList(models.Model):
+	id = models.CharField(primary_key=True, max_length=11, unique=True, editable=False, default=random_id)
+	title = models.CharField(max_length=256)
+	description = models.TextField(blank=True, default='')
+	owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='lists')
+	movies = models.ManyToManyField(Movie, related_name='movies', blank=True)
+	likes = models.ManyToManyField(User, related_name='likes', blank=True)
+	
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+
+	class Meta:
+		verbose_name = 'MovieList'
+		verbose_name_plural = 'MovieLists'
+
+	def __str__(self):
+		return self.title

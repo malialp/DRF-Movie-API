@@ -1,7 +1,7 @@
-from core.api.serializers import MovieSerializer, DirectorSerializer, ReviewSerializer
+from core.api.serializers import MovieSerializer, DirectorSerializer, ReviewSerializer, MovieListSerializer, MovieListUpdateSerializer
 from core.api.pagination import StandartMoviePagination, StandartDirectorPagination
-from core.api.permissions import IsReviewAuthorOrReadOnly
-from core.models import Movie, Director, Review
+from core.api.permissions import IsReviewAuthorOrReadOnly, IsOwnerOrReadOnly
+from core.models import Movie, Director, Review, MovieList
 
 from rest_framework.generics import get_object_or_404
 from rest_framework.exceptions import ValidationError
@@ -66,3 +66,19 @@ class ReviewCreateAPIView(generics.ListCreateAPIView):
             raise ValidationError('You can only make one comment on a movie.')
 
         serializer.save(author=author, movie=movie)
+
+class MovieListAPIView(generics.ListCreateAPIView):
+    queryset = MovieList.objects.all()
+    serializer_class = MovieListSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+class MovieListDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = MovieList.objects.all()
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+
+    def get_serializer_class(self):
+        if self.request.method in ['PUT', 'PATCH']:
+            return MovieListUpdateSerializer
+        return MovieListSerializer

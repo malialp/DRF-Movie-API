@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import Director, Movie, Review
+from core.models import Director, Movie, Review, MovieList
 
 
 class MovieSerializer(serializers.ModelSerializer):
@@ -38,3 +38,16 @@ class ReviewSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Review
 		fields = '__all__'
+
+
+class MovieListSerializer(serializers.ModelSerializer):
+	owner = serializers.StringRelatedField(read_only=True)
+	likes = serializers.IntegerField(read_only=True, source='likes.count')
+	movies = MovieSerializer(many=True, read_only=True)
+	
+	class Meta:
+		model = MovieList
+		fields = '__all__'
+
+class MovieListUpdateSerializer(MovieListSerializer):
+	movies = serializers.PrimaryKeyRelatedField(many=True, queryset=Movie.objects.all())
