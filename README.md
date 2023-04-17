@@ -63,6 +63,11 @@ The following endpoints are available:
 - `PUT /movielists/{id}`: Updates a single movielist by id.
 - `DELETE /movielists/{id}`: Deletes a single movielist by id.
 
+### Profiles
+
+- `GET /profile/{username}`: Returns a single profile by username.
+- `PUT /profile/{username}`: Updates a single profile by username.
+
 ## Authentication
 
 This API uses Token authentication to authenticate users. To obtain a token, send a POST request to the `/auth` endpoint with your username and password:
