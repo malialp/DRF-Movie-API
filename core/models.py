@@ -2,10 +2,10 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
 from .utils import random_id
+from PIL import Image
 
 def get_deleted_user_instance():
 	return User.objects.get(username="DELETED-USER")
-
 
 
 class Director(models.Model):
@@ -61,8 +61,25 @@ class MovieList(models.Model):
 		return self.title
 
 
+class Profile(models.Model):
+	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+	pic = models.ImageField(upload_to='images/', blank=True, null=True)
+	bio = models.TextField(max_length=256, blank=True, null=True)
+
+	def save(self, *args, **kwargs):
+		super().save(*args, **kwargs)
+		if self.pic:
+			img = Image.open(self.pic.path)
+			if img.height > 1080 or img.width > 1080:
+				output_size = (1080,1080)
+				img.thumbnail(output_size)
+				img.save(self.pic.path)
+
+	def __str__(self):
+		return f"{self.user.username}'s Profile"
+
 class WatchList(models.Model):
-	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='watchlist')
+	profile = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='watchlist')
 	movies = models.ManyToManyField(Movie, related_name='watchlists', blank=True)
 	updated = models.DateTimeField(auto_now=True)
 
