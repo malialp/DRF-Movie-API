@@ -1,6 +1,6 @@
 from core.api.serializers import MovieSerializer, DirectorSerializer, ReviewSerializer, MovieListSerializer, MovieListUpdateSerializer, ProfileSerializer
 from core.api.pagination import StandartMoviePagination, StandartDirectorPagination
-from core.api.permissions import IsReviewAuthorOrReadOnly, IsOwnerOrReadOnly
+from core.api.permissions import IsReviewAuthorOrReadOnly, IsOwnerOrReadOnly, IsUserOrReadOnly
 from core.models import Movie, Director, Review, MovieList, Profile
 
 from rest_framework.generics import get_object_or_404
@@ -84,10 +84,11 @@ class MovieListDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
             return MovieListUpdateSerializer
         return MovieListSerializer
 
-class ProfileAPIView(generics.RetrieveUpdateAPIView):
+class ProfileAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     lookup_url_kwarg = 'user.username'
+    permission_classes = [IsAuthenticated, IsUserOrReadOnly]
 
     def get_object(self):
         username = self.kwargs['pk']
