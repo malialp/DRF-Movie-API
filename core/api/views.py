@@ -94,4 +94,5 @@ class ProfileAPIView(generics.RetrieveUpdateDestroyAPIView):
         username = self.kwargs['pk']
         user = get_object_or_404(User, username__iexact=username)
         profile = Profile.objects.get(user=user)
+        self.check_object_permissions(self.request, profile)
         return profile
