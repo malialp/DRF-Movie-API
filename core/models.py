@@ -72,7 +72,7 @@ class Review(models.Model):
 	updated = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
-		return f'{self.author} - {self.content[:50]}'
+		return f'{self.author.user.username} - {self.content[:50]}'
 	
 
 class MovieList(models.Model):
