@@ -6,11 +6,10 @@ from .utils import random_id
 from PIL import Image
 
 def get_deleted_user_instance():
-	deleted_user = User.objects.get(username="DELETED-USER")
-	return Profile.objects.get(user=deleted_user)
+	return Profile.objects.get(user__username="DELETED-USER")
 
 def image_size_validator(image):
-	file_size = image.file.size
+	file_size = image.size
 	max_size = 10.0
 	if file_size > max_size * 1024 * 1024:
 		raise ValidationError('You cannot upload file more than 10Mb')
