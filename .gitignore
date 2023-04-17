@@ -3,3 +3,4 @@ db.sqlite3
 webscraping/
 core/migrations/*
 !core/migrations/__init__.py
+media/
