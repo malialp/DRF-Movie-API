@@ -77,11 +77,18 @@ class Profile(models.Model):
 	def save(self, *args, **kwargs):
 		super().save(*args, **kwargs)
 		if self.pic:
-			img = Image.open(self.pic.path)
-			if img.height > 1080 or img.width > 1080:
-				output_size = (1080,1080)
-				img.thumbnail(output_size)
-				img.save(self.pic.path)
+			im = Image.open(self.pic.path)
+
+			width, height = im.size
+			new_width, new_height = 1080, 1080
+
+			left = (width - new_width)/2
+			top = (height - new_height)/2
+			right = (width + new_width)/2
+			bottom = (height + new_height)/2
+
+			im = im.crop((left, top, right, bottom))
+			im.save(self.pic.path)
 
 	def __str__(self):
 		return f"{self.user.username}'s Profile"
