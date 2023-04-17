@@ -8,6 +8,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
 from rest_framework.parsers import MultiPartParser, FormParser
+from django.contrib.auth.models import User
 
 class MovieAPIView(generics.ListCreateAPIView):
     serializer_class = MovieSerializer
@@ -86,6 +87,10 @@ class MovieListDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 class ProfileAPIView(generics.RetrieveUpdateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+    lookup_url_kwarg = 'user.username'
 
-    def perform_update(self, serializer):
-        serializer.save(id=self.kwargs['pk'])
+    def get_object(self):
+        username = self.kwargs['pk']
+        user = get_object_or_404(User, username__iexact=username)
+        profile = Profile.objects.get(user=user)
+        return profile
