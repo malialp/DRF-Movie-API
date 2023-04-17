@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from core.models import Director, Movie, Review, MovieList
-from django.contrib.auth.models import User
+from core.models import Director, Movie, Review, MovieList, Profile
 
 
 class MovieSerializer(serializers.ModelSerializer):
@@ -54,9 +53,10 @@ class MovieListUpdateSerializer(MovieListSerializer):
 	movies = serializers.PrimaryKeyRelatedField(many=True, queryset=Movie.objects.all())
 
 
-class UserSerializer(serializers.ModelSerializer):
-	lists = MovieListSerializer(many=True)
+class ProfileSerializer(serializers.ModelSerializer):
+	id = serializers.StringRelatedField(read_only=True, source='user.id')
+	lists = MovieListSerializer(many=True, read_only=True, source='user.lists')
 	
 	class Meta:
-		model = User
-		fields = ['id', 'username', 'lists', 'date_joined']
+		model = Profile
+		exclude = ['user']
