@@ -56,8 +56,11 @@ class MovieListUpdateSerializer(MovieListSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
 	id = serializers.StringRelatedField(read_only=True, source='user.id')
+	username = serializers.StringRelatedField(source='user.username')
 	lists = MovieListSerializer(many=True, read_only=True, source='user.lists')
-	reviews = ReviewSerializer(many=True, read_only=True)
+	reviews = serializers.HyperlinkedRelatedField(many=True, read_only=True, view_name='review-detail')
+	lists = serializers.HyperlinkedRelatedField(many=True, read_only=True, view_name='movielist-detail')
+	date_joined = serializers.StringRelatedField(source='user.date_joined')
 
 	class Meta:
 		model = Profile
