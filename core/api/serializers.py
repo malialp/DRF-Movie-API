@@ -33,22 +33,22 @@ class DirectorSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-	author_id = serializers.StringRelatedField(read_only=True, source='author.user.id')
+	author = serializers.StringRelatedField(read_only=True, source='author.user.username')
 	movie_id = serializers.CharField(read_only=True, source='movie.id')
 	
 	class Meta:
 		model = Review
-		exclude = ['author', 'movie']
+		exclude = ['movie']
 
 
 class MovieListSerializer(serializers.ModelSerializer):
-	owner_id = serializers.StringRelatedField(read_only=True, source='owner.user.id')
+	owner = serializers.StringRelatedField(read_only=True, source='owner.user.username')
 	likes = serializers.IntegerField(read_only=True, source='likes.count')
 	movies = MovieSerializer(many=True, read_only=True)
 	
 	class Meta:
 		model = MovieList
-		exclude = ['owner']
+		fields = '__all__'
 
 class MovieListUpdateSerializer(MovieListSerializer):
 	movies = serializers.PrimaryKeyRelatedField(many=True, queryset=Movie.objects.all())
