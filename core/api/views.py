@@ -1,14 +1,13 @@
-from core.api.serializers import MovieSerializer, DirectorSerializer, ReviewSerializer, MovieListSerializer, MovieListUpdateSerializer, UserSerializer
+from core.api.serializers import MovieSerializer, DirectorSerializer, ReviewSerializer, MovieListSerializer, MovieListUpdateSerializer, ProfileSerializer
 from core.api.pagination import StandartMoviePagination, StandartDirectorPagination
 from core.api.permissions import IsReviewAuthorOrReadOnly, IsOwnerOrReadOnly
-from core.models import Movie, Director, Review, MovieList
+from core.models import Movie, Director, Review, MovieList, Profile
 
 from rest_framework.generics import get_object_or_404
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
-
-from django.contrib.auth.models import User
+from rest_framework.parsers import MultiPartParser, FormParser
 
 class MovieAPIView(generics.ListCreateAPIView):
     serializer_class = MovieSerializer
@@ -84,6 +83,9 @@ class MovieListDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
             return MovieListUpdateSerializer
         return MovieListSerializer
 
-class UserDetailAPIView(generics.RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+class ProfileAPIView(generics.RetrieveUpdateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+    def perform_update(self, serializer):
+        serializer.save(id=self.kwargs['pk'])
