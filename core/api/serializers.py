@@ -34,11 +34,11 @@ class DirectorSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
 	author_id = serializers.StringRelatedField(read_only=True, source='author.user.id')
-	movie = serializers.CharField(read_only=True, source='movie.id')
+	movie_id = serializers.CharField(read_only=True, source='movie.id')
 	
 	class Meta:
 		model = Review
-		exclude = ['author']
+		exclude = ['author', 'movie']
 
 
 class MovieListSerializer(serializers.ModelSerializer):
@@ -57,7 +57,8 @@ class MovieListUpdateSerializer(MovieListSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
 	id = serializers.StringRelatedField(read_only=True, source='user.id')
 	lists = MovieListSerializer(many=True, read_only=True, source='user.lists')
-	
+	reviews = ReviewSerializer(many=True, read_only=True)
+
 	class Meta:
 		model = Profile
 		exclude = ['user']
