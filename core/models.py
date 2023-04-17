@@ -71,7 +71,7 @@ class MovieList(models.Model):
 
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-	pic = models.ImageField(upload_to='images/', blank=True, null=True)
+	pic = models.ImageField(upload_to='images/', blank=True, null=True, validators=[image_size_validator])
 	bio = models.TextField(max_length=256, blank=True, null=True)
 
 	def save(self, *args, **kwargs):
