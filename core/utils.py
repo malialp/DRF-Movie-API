@@ -33,5 +33,4 @@ def resize(path):
 		return img
 
 	crop_data = (x, y, width, height)
-	print(crop_data)
 	return img.crop(crop_data)
