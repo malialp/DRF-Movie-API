@@ -7,7 +7,6 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
-from rest_framework.parsers import MultiPartParser, FormParser
 from django.contrib.auth.models import User
 
 class MovieAPIView(generics.ListCreateAPIView):
