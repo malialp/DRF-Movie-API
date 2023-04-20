@@ -1,19 +1,11 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
-from .utils import random_id, get_path, resize
+from .utils import random_id, get_path, resize, image_size_validator
 from PIL import Image
 
 def get_deleted_user_instance():
 	return Profile.objects.get(user__username="DELETED-USER")
-
-def image_size_validator(image):
-	file_size = image.size
-	max_size = 10.0
-	if file_size > max_size * 1024 * 1024:
-		raise ValidationError('You cannot upload file more than 10Mb')
-	return image
 
 
 class Profile(models.Model):

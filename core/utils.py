@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 import random, string, os
 from PIL import Image
 import math
@@ -34,3 +35,10 @@ def resize(path):
 
 	crop_data = (x, y, width, height)
 	return img.crop(crop_data)
+
+def image_size_validator(image):
+	file_size = image.size
+	max_size = 10.0
+	if file_size > max_size * 1024 * 1024:
+		raise ValidationError('You cannot upload file more than 10Mb')
+	return image
