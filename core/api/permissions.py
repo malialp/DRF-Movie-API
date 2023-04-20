@@ -8,7 +8,7 @@ class IsReviewAuthorOrReadOnly(permissions.BasePermission):
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        return request.user == obj.owner or request.method in permissions.SAFE_METHODS or request.user.is_staff and request.method in ('GET', 'DELETE')
+        return request.user == obj.owner.user or request.method in permissions.SAFE_METHODS or request.user.is_staff and request.method in ('GET', 'DELETE')
     
 
 class IsUserOrReadOnly(permissions.BasePermission):
