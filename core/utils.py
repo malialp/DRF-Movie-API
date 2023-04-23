@@ -3,7 +3,7 @@ import random, string, os
 from PIL import Image
 import math
 
-def random_id(l):
+def random_id(l=11):
     return ''.join([random.choice(string.ascii_letters + string.digits) for i in range(l)])
 
 def get_path(instance, filename):
