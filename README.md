@@ -67,6 +67,8 @@ The following endpoints are available:
 
 - `GET /profile/{username}`: Returns a single profile by username.
 - `PUT /profile/{username}`: Updates a single profile by username.
+- `POST /profile/{username}/likes/`: Appends a single movielist to likes by id.
+- `DELETE /profile/{username}/likes/`: Removes a single movielist from likes by id.
 
 ## Authentication
 
