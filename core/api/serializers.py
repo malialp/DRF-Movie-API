@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from core.models import Director, Movie, Review, MovieList, Profile
-
+from core.api.fields import LikeHyperlink
 
 class MovieSerializer(serializers.ModelSerializer):
 	director_id = serializers.CharField(source="director.id")
@@ -61,6 +61,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 	reviews = serializers.HyperlinkedRelatedField(many=True, read_only=True, view_name='review-detail')
 	lists = serializers.HyperlinkedRelatedField(many=True, read_only=True, view_name='movielist-detail')
 	date_joined = serializers.StringRelatedField(source='user.date_joined')
+	likes = LikeHyperlink(many=True, read_only=True)
 
 	class Meta:
 		model = Profile
