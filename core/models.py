@@ -23,7 +23,7 @@ class Profile(models.Model):
 
 
 class Director(models.Model):
-	id = models.CharField(primary_key=True, max_length=11, unique=True, editable=False, default=random_id(11))
+	id = models.CharField(primary_key=True, max_length=11, unique=True, editable=False, default=random_id)
 	name = models.CharField(max_length=250)
 	birthdate = models.DateField()
 
@@ -31,7 +31,7 @@ class Director(models.Model):
 		return self.name
 
 class Movie(models.Model):
-	id = models.CharField(primary_key=True, max_length=11, unique=True, editable=False, default=random_id(11))
+	id = models.CharField(primary_key=True, max_length=11, unique=True, editable=False, default=random_id)
 	title = models.CharField(max_length=250, unique=True)
 	director = models.ForeignKey(Director, on_delete=models.CASCADE, related_name="movies")
 	duration = models.TimeField()
@@ -44,7 +44,7 @@ class Movie(models.Model):
 	
 
 class Review(models.Model):
-	id = models.CharField(primary_key=True, max_length=11, unique=True, editable=False, default=random_id(11))
+	id = models.CharField(primary_key=True, max_length=11, unique=True, editable=False, default=random_id)
 	author = models.ForeignKey(Profile, on_delete=models.SET(get_deleted_user_instance), related_name='reviews')
 	movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='reviews')
 	user_rating = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)])
@@ -57,12 +57,11 @@ class Review(models.Model):
 	
 
 class MovieList(models.Model):
-	id = models.CharField(primary_key=True, max_length=11, unique=True, editable=False, default=random_id(11))
+	id = models.CharField(primary_key=True, max_length=11, unique=True, editable=False, default=random_id)
 	title = models.CharField(max_length=256)
 	description = models.TextField(blank=True, default='')
 	owner = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='lists')
 	movies = models.ManyToManyField(Movie, related_name='movies', blank=True)
-	likes = models.ManyToManyField(Profile, related_name='likes', blank=True)
 	
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
@@ -82,3 +81,10 @@ class WatchList(models.Model):
 
 	def __str__(self):
 		return f"{self.user.username}'s WatchList"
+	
+class Like(models.Model):
+	profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='likes')
+	movielist = models.ForeignKey(MovieList, on_delete=models.CASCADE, related_name='likes')
+
+	def __str__(self):
+		return f'{self.profile.user.username} liked {self.movielist.title}'
