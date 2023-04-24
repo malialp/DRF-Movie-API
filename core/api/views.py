@@ -107,12 +107,25 @@ class ProfileLikeAPIView(generics.views.APIView):
     def post(self, request, *args, **kwargs):
         profile = get_object_or_404(Profile, user__username__iexact=self.kwargs['pk'])
         movielist_id = request.data['id']
-        movielist = get_object_or_404(MovieList, id=movielist_id)
-        new_like = Like.objects.create(profile=profile, movielist=movielist)
-        return Response(status=status.HTTP_200_OK)
+        movielist = MovieList.objects.filter(id=movielist_id)
+        
+        if not movielist.exists():
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={"error":{"message":"Movielist not exists."}})
+
+        movielist = movielist.first()
+        is_exists = Like.objects.filter(profile=profile, movielist=movielist).exists()
+
+        if is_exists:
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={"error":{"message":"Movielist already in likes."}})
+        else:
+            Like.objects.create(profile=profile, movielist=movielist)
+            return Response(status=status.HTTP_200_OK)
     
     def delete(self, request, *args, **kwargs):
         movielist_id = request.data['id']
-        like = get_object_or_404(Like, movielist__id=movielist_id)
-        like.delete()
-        return Response(status=status.HTTP_200_OK)
+        like = Like.objects.filter(movielist__id=movielist_id)
+        if like.exists():
+            like.first().delete()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={"error":{"message":"Movielist not in likes."}})
