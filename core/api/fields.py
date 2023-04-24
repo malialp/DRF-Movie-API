@@ -5,7 +5,6 @@ class LikeHyperlink(serializers.HyperlinkedRelatedField):
     view_name = 'movielist-detail'
 
     def get_url(self, obj, view_name, request, format):
-        print(obj)
         url_kwargs = {
          "pk": obj.movielist.id
         }
