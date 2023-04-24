@@ -1,12 +1,13 @@
 from core.api.serializers import MovieSerializer, DirectorSerializer, ReviewSerializer, MovieListSerializer, MovieListUpdateSerializer, ProfileSerializer
 from core.api.pagination import StandartMoviePagination, StandartDirectorPagination
 from core.api.permissions import IsReviewAuthorOrReadOnly, IsOwnerOrReadOnly, IsUserOrReadOnly
-from core.models import Movie, Director, Review, MovieList, Profile
+from core.models import Movie, Director, Review, MovieList, Profile, Like
 
 from rest_framework.generics import get_object_or_404
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import generics
+from rest_framework import generics, status
+from rest_framework.response import Response
 from django.contrib.auth.models import User
 
 class MovieAPIView(generics.ListCreateAPIView):
@@ -99,3 +100,19 @@ class ProfileAPIView(generics.RetrieveUpdateDestroyAPIView):
     def perform_update(self, serializer):
         image = self.request.FILES.get('image', None)
         serializer.save(pic=image)
+
+class ProfileLikeAPIView(generics.views.APIView):
+    http_method_names = ('post', 'delete')
+
+    def post(self, request, *args, **kwargs):
+        profile = get_object_or_404(Profile, user__username__iexact=self.kwargs['pk'])
+        movielist_id = request.data['id']
+        movielist = get_object_or_404(MovieList, id=movielist_id)
+        new_like = Like.objects.create(profile=profile, movielist=movielist)
+        return Response(status=status.HTTP_200_OK)
+    
+    def delete(self, request, *args, **kwargs):
+        movielist_id = request.data['id']
+        like = get_object_or_404(Like, movielist__id=movielist_id)
+        like.delete()
+        return Response(status=status.HTTP_200_OK)
