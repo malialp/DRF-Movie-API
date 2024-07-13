@@ -13,27 +13,22 @@ def get_path(instance, filename):
 
 def resize(path):
 	img = Image.open(path)
-	width, height = img.size
-	minsize = min((*img.size,1080))
+	
+	width, height = img.size 
+	print(width, height)
+	
+	maxsquaresize = min((*img.size,1080))
+	print(maxsquaresize)
 
-	if width > height:
-		x = math.ceil((width - minsize) / 2)
-		y = 0
-		width = width - math.floor((width - minsize) / 2)
-		height = minsize
+	x = math.ceil((width - maxsquaresize) / 2)
+	y = math.ceil((height - maxsquaresize) / 2)
+	
+	print(x,y)
 
-	elif width < height:
-		x = 0
-		y = math.ceil((width - minsize) / 2)
-		width = minsize
-		height = width - math.floor((width - minsize) / 2)
-
-	elif width == height:
-		if width > 1080 or height > 1080:
-			img.thumbnail((minsize, minsize), Image.Resampling.LANCZOS)
-		return img
-
-	crop_data = (x, y, width, height)
+	
+	width, height = maxsquaresize, maxsquaresize
+	crop_data = (x, y, x + width, y + height)
+	print(crop_data)
 	return img.crop(crop_data)
 
 def image_size_validator(image):
