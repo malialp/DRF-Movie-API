@@ -13,22 +13,14 @@ def get_path(instance, filename):
 
 def resize(path):
 	img = Image.open(path)
-	
 	width, height = img.size 
-	print(width, height)
-	
 	maxsquaresize = min((*img.size,1080))
-	print(maxsquaresize)
 
 	x = math.ceil((width - maxsquaresize) / 2)
 	y = math.ceil((height - maxsquaresize) / 2)
-	
-	print(x,y)
-
-	
 	width, height = maxsquaresize, maxsquaresize
+
 	crop_data = (x, y, x + width, y + height)
-	print(crop_data)
 	return img.crop(crop_data)
 
 def image_size_validator(image):
