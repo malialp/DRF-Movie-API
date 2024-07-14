@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
-import random, string, os
-from PIL import Image
+import random, string, os, io
+from PIL import Image, ImageSequence
 import math
 
 def random_id(l=11):
@@ -11,8 +11,12 @@ def get_path(instance, filename):
     filename = f'{random_id(20)}.{ext}'
     return os.path.join('images', filename)
 
-def resize(path):
-	img = Image.open(path)
+def resize(path, gif=False):
+	if gif:
+		img = path
+	else:
+		img = Image.open(path)
+	
 	width, height = img.size 
 	maxsquaresize = min((*img.size,1080))
 
@@ -29,3 +33,24 @@ def image_size_validator(image):
 	if file_size > max_size * 1024 * 1024:
 		raise ValidationError('You cannot upload file more than 10Mb')
 	return image
+
+def resize_gif(path):
+	image = Image.open(path)
+
+	frames = []
+	for frame in ImageSequence.Iterator(image):
+		frames.append(resize(frame, gif=True))
+
+	duration = 0
+
+	while True:
+		try:
+			frame_duration = image.info['duration']
+			duration += frame_duration
+			image.seek(image.tell() + 1)
+		except EOFError:
+			break
+
+	buffer = io.BytesIO()
+	frames[0].save(buffer, format=image.format.lower(), save_all=True, append_images=frames[1:], duration=duration, loop=0)
+	return buffer
