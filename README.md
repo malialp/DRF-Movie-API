@@ -33,40 +33,40 @@ The following endpoints are available:
 
 ### Movies
 
-- `GET /movies`: Returns a list of all movies.
-- `POST /movies`: Creates a new movie.
-- `GET /movies/{id}`: Returns a single movie by id.
-- `PUT /movies/{id}`: Updates a single movie by id.
-- `DELETE /movies/{id}`: Deletes a single movie by id.
-- `GET /movies/{id}/reviews`: Returns a list of reviews of the movie.
-- `POST /movies/{id}/reviews`: Creates a new movie review for the movie.
+- `GET /movies/`: Returns a list of all movies.
+- `POST /movies/`: Creates a new movie.
+- `GET /movies/{id}/`: Returns a single movie by id.
+- `PUT /movies/{id}/`: Updates a single movie by id.
+- `DELETE /movies/{id}/`: Deletes a single movie by id.
+- `GET /movies/{id}/reviews/`: Returns a list of reviews of the movie.
+- `POST /movies/{id}/reviews/`: Creates a new movie review for the movie.
 
 ### Directors
 
-- `GET /directors`: Returns a list of all directors.
-- `POST /directors`: Creates a new director.
-- `GET /directors/{id}`: Returns a single director by id.
-- `PUT /directors/{id}`: Updates a single director by id.
-- `DELETE /directors/{id}`: Deletes a single director by id.
+- `GET /directors/`: Returns a list of all directors.
+- `POST /directors/`: Creates a new director.
+- `GET /directors/{id}/`: Returns a single director by id.
+- `PUT /directors/{id}/`: Updates a single director by id.
+- `DELETE /directors/{id}/`: Deletes a single director by id.
 
 ### Reviews
 
-- `GET /reviews/{id}`: Returns a single review by id.
-- `PUT /reviews/{id}`: Updates a single review by id.
-- `DELETE /reviews/{id}`: Deletes a single review by id.
+- `GET /reviews/{id}/`: Returns a single review by id.
+- `PUT /reviews/{id}/`: Updates a single review by id.
+- `DELETE /reviews/{id}/`: Deletes a single review by id.
 
 ### MovieLists
 
-- `GET /movielists`: Returns a list of all movielists.
-- `POST /movielists`: Creates a new movielist.
-- `GET /movielists/{id}`: Returns a single movielist by id.
-- `PUT /movielists/{id}`: Updates a single movielist by id.
-- `DELETE /movielists/{id}`: Deletes a single movielist by id.
+- `GET /movielists/`: Returns a list of all movielists.
+- `POST /movielists/`: Creates a new movielist.
+- `GET /movielists/{id}/`: Returns a single movielist by id.
+- `PUT /movielists/{id}/`: Updates a single movielist by id.
+- `DELETE /movielists/{id}/`: Deletes a single movielist by id.
 
 ### Profiles
 
-- `GET /profile/{username}`: Returns a single profile by username.
-- `PUT /profile/{username}`: Updates a single profile by username.
+- `GET /profile/{username}/`: Returns a single profile by username.
+- `PUT /profile/{username}/`: Updates a single profile by username.
 - `POST /profile/{username}/likes/`: Appends a single movielist to likes by id.
 - `DELETE /profile/{username}/likes/`: Removes a single movielist from likes by id.
 
@@ -95,7 +95,7 @@ The server will respond with a JSON object containing your token:
 Include the token in subsequent requests by including the `Authorization` header with the value `Token your-token`:
 
 ```http
-GET  /movies
+GET  /movies/
 Authorization: Token your-token
 ```
 
