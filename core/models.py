@@ -2,7 +2,6 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
 from .utils import random_id, get_path, resize_frame, resize_gif, image_size_validator
-from PIL import Image
 
 
 def get_deleted_user_instance():
