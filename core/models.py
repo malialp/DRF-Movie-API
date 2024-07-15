@@ -1,7 +1,9 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
-from .utils import random_id, get_path, resize, image_size_validator
+from .utils import random_id, get_path, resize_frame, resize_gif, image_size_validator
+from PIL import Image
+
 
 def get_deleted_user_instance():
 	return Profile.objects.get(user__username="DELETED-USER")
@@ -15,9 +17,15 @@ class Profile(models.Model):
 	def save(self, *args, **kwargs):
 		super().save(*args, **kwargs)
 		if self.pic:
-			img = resize(self.pic.path)
-			img.save(self.pic.path)
+			format = self.pic.name.split('.')[-1].lower()
 
+			if format == 'gif':
+				img = resize_gif(self.pic)
+			else:
+				img = resize_frame(self.pic)
+			
+			img.save(self.pic.path, save_all=True)
+			
 	def __str__(self):
 		return f"{self.user.username}'s Profile"
 

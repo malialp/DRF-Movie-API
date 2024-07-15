@@ -98,7 +98,7 @@ class ProfileAPIView(generics.RetrieveUpdateDestroyAPIView):
         return profile
     
     def perform_update(self, serializer):
-        image = self.request.FILES.get('image', None)
+        image = self.request.FILES.get('pic', None)
         serializer.save(pic=image)
 
 class ProfileLikeAPIView(generics.views.APIView):
