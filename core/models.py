@@ -43,7 +43,7 @@ class Movie(models.Model):
 	director = models.ForeignKey(Director, on_delete=models.CASCADE, related_name="movies")
 	duration = models.TimeField()
 	release_date = models.DateField()
-	imdb_rating = models.DecimalField(max_digits=3, decimal_places=1)
+	rating = models.DecimalField(max_digits=3, decimal_places=1)
 
 
 	def __str__(self):
