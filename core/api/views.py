@@ -96,10 +96,7 @@ class ProfileAPIView(generics.RetrieveUpdateDestroyAPIView):
         profile = Profile.objects.get(user=user)
         self.check_object_permissions(self.request, profile)
         return profile
-    
-    def perform_update(self, serializer):
-        image = self.request.FILES.get('pic', None)
-        serializer.save(pic=image)
+        
 
 class ProfileLikeAPIView(generics.views.APIView):
     http_method_names = ('post', 'delete')
