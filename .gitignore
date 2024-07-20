@@ -1,6 +1,6 @@
 __pycache__/
 db.sqlite3
-webscraping/
+tests/
 core/migrations/*
 !core/migrations/__init__.py
 media/
